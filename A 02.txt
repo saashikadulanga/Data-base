@@ -1,0 +1,21 @@
+ CREATE OR REPLACE PROCEDURE print_full_name(first_name text, last_name text)
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# DECLARE
+postgres$#     full_name text;
+postgres$# BEGIN
+postgres$#     full_name := first_name || ' ' || last_name;
+postgres$#     RAISE NOTICE 'Full name: %', full_name;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL print_full_name('John', 'Doe');
+NOTICE:  Full name: John Doe
+CALL
+postgres=# CALL print_full_name('John', 'Doe');
+NOTICE:  Full name: John Doe
+CALL
+postgres=# CALL print_full_name('saashika', 'dulanga');
+NOTICE:  Full name: saashika dulanga
+CALL
+

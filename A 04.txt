@@ -1,0 +1,26 @@
+ CREATE TABLE products (
+postgres(#     product_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+postgres(#     name TEXT NOT NULL,
+postgres(#     price NUMERIC(10, 2) NOT NULL,
+postgres(#     stock_quantity INT NOT NULL
+postgres(# );
+ERROR:  relation "products" already exists
+postgres=# CREATE OR REPLACE PROCEDURE add_product(
+postgres(#     product_name TEXT,
+postgres(#     product_price NUMERIC,
+postgres(#     product_stock INT
+postgres(# )
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# BEGIN
+postgres$#     INSERT INTO products (name, price, stock_quantity)
+postgres$#     VALUES (product_name, product_price, product_stock);
+postgres$#
+postgres$#     RAISE NOTICE 'Product added: %, Price: %, Stock: %', product_name, product_price, product_stock;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL add_product('Wireless Mouse', 29.99, 150);
+NOTICE:  Product added: Wireless Mouse, Price: 29.99, Stock: 150
+CALL
+postgres=#

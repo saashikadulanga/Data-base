@@ -1,0 +1,56 @@
+ CREATE OR REPLACE PROCEDURE delete_product(input_product_id INT)
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# BEGIN
+postgres$#     DELETE FROM products
+postgres$#     WHERE product_id = input_product_id;
+postgres$#
+postgres$#     IF NOT FOUND THEN
+postgres$#         RAISE NOTICE 'No product found with product_id %', input_product_id;
+postgres$#     ELSE
+postgres$#         RAISE NOTICE 'Product with product_id % has been deleted.', input_product_id;
+postgres$#     END IF;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CREATE OR REPLACE PROCEDURE calculate_total_stock_value_of_product(input_product_id INT)
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# DECLARE
+postgres$#     total_value NUMERIC;
+postgres$# BEGIN
+postgres$#     SELECT price * stock_quantity
+postgres$#     INTO total_value
+postgres$#     FROM products
+postgres$#     WHERE product_id = input_product_id;
+postgres$#
+postgres$#     IF total_value IS NULL THEN
+postgres$#         RAISE NOTICE 'No product found with product_id %', input_product_id;
+postgres$#     ELSE
+postgres$#         RAISE NOTICE 'Total stock value for product_id % is %', input_product_id, total_value;
+postgres$#     END IF;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL delete_product(1);
+NOTICE:  Product with product_id 1 has been deleted.
+CALL
+postgres=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

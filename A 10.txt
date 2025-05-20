@@ -1,0 +1,58 @@
+ REPLACE PROCEDURE check_stock_category(input_product_id INT)
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# DECLARE
+postgres$#     stock_qty INT;
+postgres$#     stock_category TEXT;
+postgres$# BEGIN
+postgres$#     SELECT stock_quantity INTO stock_qty
+postgres$#     FROM products
+postgres$#     WHERE product_id = input_product_id;
+postgres$#
+postgres$#     IF NOT FOUND THEN
+postgres$#         RAISE NOTICE 'No product found with product_id %', input_product_id;
+postgres$#         RETURN;
+postgres$#     END IF;
+postgres$#
+postgres$#     stock_category := CASE
+postgres$#         WHEN stock_qty < 10 THEN 'Low Stock'
+postgres$#         WHEN stock_qty BETWEEN 10 AND 50 THEN 'Moderate Stock'
+postgres$#         ELSE 'High Stock'
+postgres$#     END;
+postgres$#
+postgres$#     RAISE NOTICE 'Product ID % has stock category: %', input_product_id, stock_category;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL check_stock_category(1);
+NOTICE:  No product found with product_id 1
+CALL
+postgres=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

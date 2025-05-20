@@ -1,0 +1,28 @@
+REPLACE PROCEDURE check_stock_level(input_product_id INT)
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# DECLARE
+postgres$#     stock_qty INT;
+postgres$# BEGIN
+postgres$#     SELECT stock_quantity INTO stock_qty
+postgres$#     FROM products
+postgres$#     WHERE product_id = input_product_id;
+postgres$#
+postgres$#     IF NOT FOUND THEN
+postgres$#         RAISE NOTICE 'No product found with product_id %', input_product_id;
+postgres$#         RETURN;
+postgres$#     END IF;
+postgres$#
+postgres$#     IF stock_qty <= 10 THEN
+postgres$#         RAISE NOTICE 'Low stock: % units left', stock_qty;
+postgres$#     ELSIF stock_qty > 10 AND stock_qty <= 55 THEN
+postgres$#         RAISE NOTICE 'Sufficient stock: % units left', stock_qty;
+postgres$#     ELSE
+postgres$#         RAISE NOTICE 'High stock: % units left', stock_qty;
+postgres$#     END IF;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL check_stock_level(3);
+NOTICE:  No product found with product_id 3
+CALL

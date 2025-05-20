@@ -1,0 +1,15 @@
+postgres=# CREATE OR REPLACE PROCEDURE add_numbers(num1 numeric, num2 numeric)
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# DECLARE
+postgres$#     sum_result numeric;
+postgres$# BEGIN
+postgres$#     sum_result := num1 + num2;
+postgres$#     RAISE NOTICE 'The sum of % and % is %', num1, num2, sum_result;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL add_numbers(10, 20);
+NOTICE:  The sum of 10 and 20 is 30
+CALL
+postgres=#

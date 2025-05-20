@@ -1,0 +1,19 @@
+postgres=# CREATE OR REPLACE PROCEDURE double_value(INOUT salary numeric)
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# BEGIN
+postgres$#     salary := salary * 2;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# DO $$
+postgres$# DECLARE
+postgres$#     my_salary numeric := 25000;
+postgres$# BEGIN
+postgres$#     CALL double_value(my_salary);
+postgres$#     RAISE NOTICE 'Doubled salary: %', my_salary;
+postgres$# END;
+postgres$# $$;
+NOTICE:  Doubled salary: 50000
+DO
+postgres=#

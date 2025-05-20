@@ -1,0 +1,90 @@
+ REPLACE PROCEDURE get_product_by_id(
+postgres(#     input_product_id INT,
+postgres(#     OUT product_name TEXT,
+postgres(#     OUT product_price NUMERIC,
+postgres(#     OUT stock_quantity INT
+postgres(# )
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# BEGIN
+postgres$#     SELECT name, price, stock_quantity
+postgres$#     INTO product_name, product_price, stock_quantity
+postgres$#     FROM products
+postgres$#     WHERE product_id = input_product_id;
+postgres$#
+postgres$#     IF NOT FOUND THEN
+postgres$#         RAISE NOTICE 'No product found with product_id %', input_product_id;
+postgres$#         product_name := NULL;
+postgres$#         product_price := NULL;
+postgres$#         stock_quantity := NULL;
+postgres$#     END IF;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL get_product_by_id(1,
+postgres(#                       product_name,
+postgres(#                       product_price,
+postgres(#                       stock_quantity);
+ERROR:  column "product_name" does not exist
+LINE 2:                       product_name,
+                              ^
+postgres=# -- In psql, the OUT parameters will be displayed automatically.
+postgres=# CREATE OR REPLACE PROCEDURE update_product_stock(
+postgres(#     input_product_id INT,
+postgres(#     new_stock INT
+postgres(# )
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# BEGIN
+postgres$#     UPDATE products
+postgres$#     SET stock_quantity = new_stock
+postgres$#     WHERE product_id = input_product_id;
+postgres$#
+postgres$#     IF NOT FOUND THEN
+postgres$#         RAISE NOTICE 'No product found with product_id %', input_product_id;
+postgres$#     ELSE
+postgres$#         RAISE NOTICE 'Stock updated for product_id % to %', input_product_id, new_stock;
+postgres$#     END IF;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CREATE OR REPLACE PROCEDURE update_product_stock(
+postgres(#     input_product_id INT,
+postgres(#     new_stock INT
+postgres(# )
+postgres-# LANGUAGE plpgsql
+postgres-# AS $$
+postgres$# BEGIN
+postgres$#     UPDATE products
+postgres$#     SET stock_quantity = new_stock
+postgres$#     WHERE product_id = input_product_id;
+postgres$#
+postgres$#     IF NOT FOUND THEN
+postgres$#         RAISE NOTICE 'No product found with product_id %', input_product_id;
+postgres$#     ELSE
+postgres$#         RAISE NOTICE 'Stock updated for product_id % to %', input_product_id, new_stock;
+postgres$#     END IF;
+postgres$# END;
+postgres$# $$;
+CREATE PROCEDURE
+postgres=# CALL update_product_stock(1, 200);
+NOTICE:  Stock updated for product_id 1 to 200
+CALL
+postgres=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
